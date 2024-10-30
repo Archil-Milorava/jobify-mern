@@ -1,15 +1,27 @@
-import { Outlet } from "react-router-dom";
-import SmallSidebar from "../components/SmallSidebar";
+import axios from "axios";
+import { createContext, useContext, useState } from "react";
+import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
+import Wrapper from "../assets/wrappers/Dashboard";
 import BigSidebar from "../components/BigSidebar";
 import Navbar from "../components/Navbar";
-import Wrapper from "../assets/wrappers/Dashboard";
-import { createContext, useContext, useState } from "react";
+import SmallSidebar from "../components/SmallSidebar";
+
+export const loader = async () => {
+  const { data } = await axios.get(
+    "http://localhost:3000/api/v1/users/current-user",
+    { withCredentials: true }
+  );
+
+  return data;
+};
 
 const DashboardContext = createContext();
 
 const DashoardLayout = () => {
-  // temp
-  const user = { name: "Achi" };
+  const { user } = useLoaderData();
+  const navigate = useNavigate();
+
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(true);
 
@@ -22,11 +34,20 @@ const DashoardLayout = () => {
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
     console.log("toggle sidebar");
-    
   };
 
   const logoutUser = async () => {
-    console.log("logout user");
+    try {
+      navigate("/");
+      await axios.post(
+        "http://localhost:3000/api/v1/auth/signout",
+        {},
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   };
 
   return (
@@ -47,7 +68,7 @@ const DashoardLayout = () => {
           <div>
             <Navbar />
             <div className="dashboard-page">
-              <Outlet />
+              <Outlet context={{ user }} />
             </div>
           </div>
         </main>
@@ -56,6 +77,6 @@ const DashoardLayout = () => {
   );
 };
 
-export const useDashboardContext = () => useContext(DashboardContext)
+export const useDashboardContext = () => useContext(DashboardContext);
 
 export default DashoardLayout;
