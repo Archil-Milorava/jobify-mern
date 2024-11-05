@@ -2,18 +2,18 @@ import dayjs from "dayjs";
 import Wrapper from "../assets/wrappers/Job";
 import JobInfo from "./JobInfo";
 import { FaBriefcase, FaCalendarAlt, FaLocationArrow } from "react-icons/fa";
-import { Link, Form } from "react-router-dom";
+import { Link, Form, useNavigation } from "react-router-dom";
 
 
 const Job = ({ _id, position, company, jobLocation, jobStatus, createdAt, jobType }) => {
 
-// console.log(createdAt);
-
+const navigation = useNavigation()
+const isSubmitting = navigation.state === "submitting"
 const date = dayjs(createdAt).format("MMM Do, YYYY");
 
 
 
-  return <Wrapper>
+  return <Wrapper style={{ opacity: isSubmitting ? ".5" : "1" }}>
     <header>
       <div className="main-icon">{company.charAt(0)}</div>
       <div className="info">
@@ -31,12 +31,12 @@ const date = dayjs(createdAt).format("MMM Do, YYYY");
         </div>
       </div>
       <footer className="actions">
-        <Link className="btn edit-btn">
+        <Link to={`../edit-job/${_id}`} className="btn edit-btn">
         Edit
         </Link>
-        <Form>
-        <button className="btn delete-btn">
-          delete
+        <Form method="post" action={`../delete-job/${_id}`}>
+        <button className="btn delete-btn" disabled={isSubmitting}>
+          Delete
         </button>
         </Form>
       </footer>

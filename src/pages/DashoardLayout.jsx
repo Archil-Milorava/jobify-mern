@@ -33,7 +33,6 @@ const DashoardLayout = () => {
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
-    console.log("toggle sidebar");
   };
 
   const logoutUser = async () => {

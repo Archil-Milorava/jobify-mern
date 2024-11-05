@@ -14,9 +14,12 @@ import Profile from "./pages/Profile";
 import { action as registerAction } from "./pages/Register";
 import { action as loginAction } from "./pages/Login";
 import { action as creaTeJobAction } from "./pages/AddJob";
+import { action as editJobAction } from "./pages/EditJob";
+import {action as deleteJobAction} from "./pages/DeleteJob"
 
 import { loader as exampleLoader } from "./pages/DashoardLayout";
 import { loader as allJobsLoader } from "./pages/AllJobs";
+import { loader as getSingleJobLoader } from "./pages/EditJob";
 
 const router = createBrowserRouter([
   {
@@ -62,9 +65,15 @@ const router = createBrowserRouter([
             element: <Profile />,
           },
           {
-            path: "edit-job",
+            path: "edit-job/:id",
             element: <EditJob />,
+            loader: getSingleJobLoader,
+            action: editJobAction,
           },
+          {
+            path: "delete-job/:id",
+            action: deleteJobAction,
+          }
         ],
       },
     ],
