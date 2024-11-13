@@ -9,7 +9,7 @@ const Job = ({ _id, position, company, jobLocation, jobStatus, createdAt, jobTyp
 
 const navigation = useNavigation()
 const isSubmitting = navigation.state === "submitting"
-const date = dayjs(createdAt).format("MMM Do, YYYY");
+const date = dayjs(createdAt).format("MMM D, YYYY");
 
 
 

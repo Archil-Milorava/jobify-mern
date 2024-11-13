@@ -4,13 +4,21 @@ import SearchJob from "../components/SearchJob";
 import { useLoaderData } from "react-router-dom";
 import { createContext, useContext } from "react";
 
-export const loader = async () => {
-  try {
-    const { data } = await axios.get("http://localhost:3000/api/v1/jobs", {
-      withCredentials: true,
-    });
+export const loader = async ({ request }) => {
+  const params = Object.fromEntries([
+    ...new URL(request.url).searchParams.entries(),
+  ]);
 
-    return { data };
+  try {
+    const { data } = await axios.get(
+      "http://localhost:3000/api/v1/jobs",
+      {
+        withCredentials: true,
+        params,
+      }
+    );
+
+    return { data, searchValues: {...params} };
   } catch (error) {
     console.log(error);
   }
@@ -18,11 +26,12 @@ export const loader = async () => {
 
 const jobContext = createContext();
 const AllJobs = () => {
-  const { data } = useLoaderData();
+  
+  const { data, searchValues } = useLoaderData();
 
   return (
     <>
-      <jobContext.Provider value={{data}}>
+      <jobContext.Provider value={{ data, searchValues }}>
         <SearchJob />
         <JobContainer />
       </jobContext.Provider>
