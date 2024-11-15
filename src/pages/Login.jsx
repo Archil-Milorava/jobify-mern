@@ -28,6 +28,10 @@ const Login = () => {
       <Form method="POST" className="form">
         <Logo />
         <h4>Login</h4>
+        <small>
+          lazy for creating account? use folowing and test app: <i>test@mail.com</i> and
+          password: <i>123123</i>
+        </small>
         <FormRow type="email" name="email" labelText={"name"} />
         <FormRow type="password" name="password" labelText={"password"} />
         <button className="btn btn-block" disabled={isSubmitting} type="submit">

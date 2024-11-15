@@ -28,6 +28,7 @@ const jobContext = createContext();
 const AllJobs = () => {
   
   const { data, searchValues } = useLoaderData();
+  
 
   return (
     <>
